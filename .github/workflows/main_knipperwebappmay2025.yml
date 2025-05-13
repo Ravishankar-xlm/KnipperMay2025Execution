@@ -18,45 +18,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.x'
-
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
-
-      - name: dotnet publish
-        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
-
-  deploy:
-    runs-on: windows-latest
-    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
-
+ 
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: .net-app
-      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_13A1459B24E5440E93485BBF838E14CB }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_63C00B7F8A884F6C88F12DAC7630286A }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_27A7EFCA7DB7437FBC348539427139BC }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_9AEDE06E97394FF7AC06D20D6E3B6B8B }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_28D8DB1B14DB4C69A786B076B00E2769 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_00FA1F507E9B4E97B06C0173349B5635 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
